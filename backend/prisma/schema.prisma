@@ -1,0 +1,29 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model measurement_log {
+  measureId       String @id @unique 
+  voltage         Float
+  current         Float 
+  power           Float
+  createdTime     DateTime @default(now())
+}
+
+model user {
+  id       String @id @unique
+  name     String
+  email    String
+  password String
+}

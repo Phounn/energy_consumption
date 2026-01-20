@@ -17,15 +17,9 @@ import { average } from "./helper/avg";
 
 const app = Express();
 
-const corsOptions = {
-  origin: ["http://localhost:5000", "http://esp8266.local"],
-  credentials: true, // Set to true if you need to handle cookies or authorization headers
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Specify allowed methods
-  allowedHeaders: ["Content-Type", "Authorization"], // Specify allowed headers
-};
 
 // Enable CORS with specific options
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(Express.json());
 
 app.use(Express.urlencoded({ extended: true }));
@@ -57,7 +51,7 @@ app.post("/energy", async (req: Request, res: Response) => {
 
 app.get("/energy", async (req: Request, res: Response) => {
   try {
-    console.log("HIT")
+    console.log("HIT");
     const request = QueryRequest.parse(req.query);
 
     const args: Prisma.measurement_logFindManyArgs = {};
@@ -96,8 +90,6 @@ app.get("/energy", async (req: Request, res: Response) => {
 
 app.get("/energy/summary", async (req: Request, res: Response) => {
   try {
-    console.log("HIT")
-    
     const request = QueryRequest.parse(req.query);
 
     const args: Prisma.measurement_logFindManyArgs = {};
@@ -124,7 +116,7 @@ app.get("/energy/summary", async (req: Request, res: Response) => {
       current: average(rows, (r) => r.current),
       power: average(rows, (r) => r.power),
     };
-    
+
     return res.json(response);
   } catch (err) {
     if (err instanceof z.ZodError) {
@@ -188,5 +180,3 @@ app.get("/sse/energy", async (req: Request, res: Response) => {
 app.listen(3000, "0.0.0.0", () => {
   console.log("Server running on http://0.0.0.0:3000");
 });
-
-

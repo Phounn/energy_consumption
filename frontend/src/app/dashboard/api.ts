@@ -4,7 +4,11 @@ import { TableDataResponse} from "../../../../backend/types/CommonDataResponse";
 import { PaginationState } from "@tanstack/react-table";
 import { AvgProps } from "./components/card-section";
 
-const API = process.env.NEXT_PUBLIC_API_URL ;
+
+const origin =
+  typeof window !== "undefined"
+    ? window.location.origin.replace("5000", "3000")
+    : "";
 
 interface RequestDate{
   startDate: Date | undefined,
@@ -18,7 +22,8 @@ export interface RequestProps {
 
 export const getEnergy = async (props: RequestProps): Promise<TableDataResponse<EnergyType>> => {
   try {
-    console.log(API)
+    console.log("Port", origin)
+
     let filterConditions = [];
     let filterString = "";
     if (props.date.startDate != null && props.date.endDate != null) {
@@ -32,7 +37,7 @@ export const getEnergy = async (props: RequestProps): Promise<TableDataResponse<
     if (filterConditions.length > 0)
       filterString = `?${filterConditions.join("&")}`;
 
-    const response = await fetch(`${API}/energy${filterString}`);
+    const response = await fetch(`${origin}/energy${filterString}`);
     const data = await response.json();
     return data;
   } catch (err) {
@@ -53,7 +58,7 @@ export const getEnergySummary = async (props: RequestProps): Promise<AvgProps> =
     if (filterConditions.length > 0)
       filterString = `?${filterConditions.join("&")}`;
 
-    const response = await fetch(`${API}/energy/summary${filterString}`);
+    const response = await fetch(`${origin}/energy/summary${filterString}`);
     const data = await response.json();
     return data;
   } catch (err) {

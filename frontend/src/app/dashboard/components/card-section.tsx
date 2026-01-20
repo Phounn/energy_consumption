@@ -72,11 +72,9 @@ export const CardSections = ({ dateRange, setDateRage }: CardSectionProps) => {
           startDate: dateRange?.from,
           endDate: dateRange?.to,
         },
-       
       }),
     placeholderData: keepPreviousData,
   });
-  
 
   return (
     <>
@@ -133,7 +131,8 @@ export const CardSections = ({ dateRange, setDateRage }: CardSectionProps) => {
 export const CardSectionsSSE = () => {
   const [avg, setAvg] = useState<AvgProps>();
   useEffect(() => {
-    const url = `${process.env.NEXT_PUBLIC_API_URL}/sse/energy`;
+    const origin = window.location.origin.replace("5000", "3000");
+    const url = `${origin}/sse/energy`;
     console.log(url);
     const es = new EventSource(url);
 
